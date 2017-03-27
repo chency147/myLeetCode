@@ -593,6 +593,11 @@ func letterCombinations(digits string) []string {
 		8: "tuv",
 		9: "wxyz",
 	}
+	lenTable := []int{0: 0,
+		1: 0, 2: 3, 3: 3,
+		4: 3, 5: 3, 6: 3,
+		7: 4, 8: 3, 9: 4,
+	}
 	count := 1
 	for _, num := range digits {
 		index := num - '0'
@@ -605,7 +610,7 @@ func letterCombinations(digits string) []string {
 		count *= len(table[index])
 	}
 	result := make([]string, count)
-	i := 0
+	perCount := count
 	for _, num := range digits {
 		index := num - '0'
 		if index < 0 || index > 9 {
@@ -614,14 +619,10 @@ func letterCombinations(digits string) []string {
 		if index == 0 || index == 1 {
 			continue
 		}
-		i++
-		for j, char := range table[index] {
-			for k := range result {
-				// TODO
-				if j == count/len(table[index]) {
-					result[k] += string(char)
-				}
-			}
+		perLen := lenTable[index]
+		perCount /= perLen
+		for k := range result {
+			result[k] += string(table[index][(k/perCount)%perLen])
 		}
 	}
 	return result

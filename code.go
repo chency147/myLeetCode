@@ -627,3 +627,81 @@ func letterCombinations(digits string) []string {
 	}
 	return result
 }
+
+/* 18 */
+// fourSum 给定整数数组，如果数组内存在三个整数和为target，那么将所有这样的三个数成组返回
+func fourSum(nums []int, target int) [][]int {
+	length := len(nums)
+	if length < 4 {
+		return [][]int{}
+	}
+	sort.Ints(nums)
+	result := make([][]int, 0)
+	for i := 0; i < length; i++ {
+		target1 := target - nums[i]
+		for j := i + 1; j < length; j++ {
+			target2, left, right := target1-nums[j], j+1, length-1
+			for left < right {
+				sum := nums[left] + nums[right]
+				if sum < target2 {
+					left++
+				} else if sum > target2 {
+					right--
+				} else {
+					temp := []int{nums[i], nums[j], nums[left], nums[right]}
+					result = append(result, temp)
+					for left < right && nums[left] == temp[2] {
+						left++
+					}
+					for left < right && nums[right] == temp[3] {
+						right--
+					}
+				}
+			}
+			for j+1 < length && nums[j] == nums[j+1] {
+				j++
+			}
+		}
+		for i+1 < length && nums[i] == nums[i+1] {
+			i++
+		}
+	}
+	return result
+}
+
+/* 19 */
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	t1, t2 := &head, head
+	for i := 1; i < n; i++ {
+		t2 = t2.Next
+	}
+	for t2.Next != nil {
+		t1 = &((*t1).Next)
+		t2 = t2.Next
+	}
+	*t1 = (*t1).Next
+	return head
+}
+
+/* 20 */
+// isValid
+func isValid(s string) bool {
+	length := len(s)
+	if length == 0 {
+		return true
+	}
+	if length%2 == 1 {
+		return false
+	}
+	stack := []byte{s[0]}
+	for i := 1; i < length; i++ {
+
+	}
+}

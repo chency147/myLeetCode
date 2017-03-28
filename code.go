@@ -700,8 +700,52 @@ func isValid(s string) bool {
 	if length%2 == 1 {
 		return false
 	}
-	stack := []byte{s[0]}
+	stack := make([]byte, length)
+	needle := 0
+	stack[needle] = s[0]
 	for i := 1; i < length; i++ {
-
+		if (s[i] == ')' && stack[needle] == '(') || (s[i] == ']' && stack[needle] == '[') || (s[i] == '}' && stack[needle] == '{') {
+			needle--
+		} else {
+			needle++
+			stack[needle] = s[i]
+		}
 	}
+	return needle == -1
+}
+
+/* 21 */
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	front := ListNode{}
+	var temp *ListNode
+	temp = &front
+	for curr1, curr2 := l1, l2; curr1 != nil || curr2 != nil; {
+		curr := ListNode{}
+		if curr1 == nil {
+			curr.Val = curr2.Val
+			curr2 = curr2.Next
+		} else if curr2 == nil {
+			curr.Val = curr1.Val
+			curr1 = curr1.Next
+		} else {
+			if curr1.Val > curr2.Val {
+				curr.Val = curr2.Val
+				curr2 = curr2.Next
+			} else {
+				curr.Val = curr1.Val
+				curr1 = curr1.Next
+			}
+		}
+		curr.Next = nil
+		temp.Next = &curr
+		temp = temp.Next
+	}
+	return front.Next
 }

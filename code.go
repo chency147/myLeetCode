@@ -11,8 +11,7 @@ import (
 
 func main() {
 	// fmt.Println(myAtoi("2147483648"))
-	a := "23"
-	fmt.Print(letterCombinations(a))
+	fmt.Print(generateParenthesis(1))
 }
 
 /* 1 */
@@ -748,4 +747,23 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 		temp = temp.Next
 	}
 	return front.Next
+}
+
+/* 22 */
+func addParentheses(set *[]string, str string, m int, n int) {
+	if m == 0 && n == 0 {
+		*set = append(*set, str)
+		return
+	}
+	if m > 0 {
+		addParentheses(set, str+"(", m-1, n+1)
+	}
+	if n > 0 {
+		addParentheses(set, str+")", m, n-1)
+	}
+}
+func generateParenthesis(n int) []string {
+	set := make([]string, 0)
+	addParentheses(&set, "", n, 0)
+	return set
 }

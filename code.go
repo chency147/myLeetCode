@@ -767,3 +767,38 @@ func generateParenthesis(n int) []string {
 	addParentheses(&set, "", n, 0)
 	return set
 }
+
+/* 23 */
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeKLists(lists []*ListNode) *ListNode {
+	length := len(lists)
+	if length == 0 {
+		return nil
+	}
+	result := lists[0]
+	for i := 1; i < length; i++ {
+		result = myMergeTwoLists(result, lists[i])
+	}
+	return result
+}
+
+func myMergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	if l1 == nil {
+		return l2
+	}
+	if l2 == nil {
+		return l1
+	}
+	if l1.Val < l2.Val {
+		l1.Next = myMergeTwoLists(l1.Next, l2)
+		return l1
+	}
+	l2.Next = myMergeTwoLists(l1, l2.Next)
+	return l2
+}
